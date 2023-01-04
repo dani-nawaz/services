@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Dialog, Disclosure, Menu, Popover, Transition } from '@headlessui/react';
 import {
   XMarkIcon,
@@ -6,6 +6,7 @@ import {
 import c from 'classnames';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import MainLayout from '../components/MainLayout';
+import { useCartContext } from '../components/cartContext';
 
 const sortOptions = [
   { name: 'Most Popular', href: '#' },
@@ -33,29 +34,32 @@ const filters = [
 const products1 = [
   {
     id: 1,
-    name: 'Focus Paper Refill',
+    name: 'Netflix',
     href: '#',
     price: '$13',
-    description: '3 sizes available',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-01-image-card-01.jpg',
+    description: 'Monthly',
+    Size: 'Single User License',
+    imageSrc: 'https://deadline.com/wp-content/uploads/2022/08/Netflix_Symbol_logo.jpg',
     imageAlt: 'Person using a pen to cross a task off a productivity paper card.',
   },
   {
     id: 2,
-    name: 'Focus Card Holder',
+    name: 'Spotify',
     href: '#',
     price: '$64',
-    description: 'Walnut',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-01-image-card-02.jpg',
+    description: 'Monthly',
+    Size: 'Single User License',
+    imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Spotify_App_Logo.svg/1200px-Spotify_App_Logo.svg.png',
     imageAlt: 'Paper card sitting upright in walnut card holder on desk.',
   },
   {
     id: 3,
-    name: 'Focus Carry Pouch',
+    name: 'Adobe After Effects',
     href: '#',
     price: '$32',
-    description: 'Heather Gray',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-01-image-card-03.jpg',
+    description: 'Monthly',
+    Size: 'Single User License',
+    imageSrc: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Adobe_After_Effects_CC_icon.png/492px-Adobe_After_Effects_CC_icon.png',
     imageAlt: 'Textured gray felt pouch for paper cards with snap button flap and elastic pen holder loop.',
   },
   // More products...
@@ -63,6 +67,8 @@ const products1 = [
 
 export default function Home() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const { addToCart } = useCartContext();
+
 
   return (
     <MainLayout className="bg-gray-50">
@@ -292,7 +298,7 @@ export default function Home() {
 
               <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
                 {products1.map((product) => (
-                  <a key={product.id} href={product.href} className="group">
+                  <div key={product.id} className="group">
                     <div
                       className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg sm:aspect-w-2 sm:aspect-h-3">
                       <img
@@ -305,7 +311,8 @@ export default function Home() {
                         <h1 className="text-2xl text-gray-900">{product.name}</h1>
                         <button
                           className="mt-5 px-8 py-3 rounded-full bg-indigo-500 text-white hover:bg-indigo-600 duration-300"
-                        >Add to cart
+                          onClick={() => addToCart(product)}>
+                          Add to cart
                         </button>
                       </div>
                     </div>
@@ -314,7 +321,7 @@ export default function Home() {
                       <p>{product.price}</p>
                     </div>
                     <p className="mt-1 text-sm italic text-gray-500">{product.description}</p>
-                  </a>
+                  </div>
                 ))}
               </div>
             </section>
@@ -347,7 +354,6 @@ export default function Home() {
                 </a>
               </div>
             </section>
-
           </div>
         </main>
       </div>

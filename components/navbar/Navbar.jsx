@@ -4,19 +4,40 @@ import { Bars3Icon, MagnifyingGlassIcon, QuestionMarkCircleIcon, ShoppingBagIcon
 import ActiveLink from '../ActiveLink';
 import MobileMenu from './MobileMenu';
 import { useState } from 'react';
+import { useCartContext } from '../cartContext';
+import Link from 'next/link';
 
 const currencies = ['CAD', 'USD', 'AUD', 'EUR', 'GBP'];
 const navigation = {
   pages: [
     { name: 'Home', href: '/home' },
-    { name: 'About', href: '/about' },
-    { name: 'Services', href: '/services' },
+    { name: 'About', href: '/' },
+    { name: 'Services', href: '/' },
   ],
 };
 
 
+export  function Logo() {
+  return <div className="hidden lg:flex lg:flex-1 lg:items-center">
+    <a href="#">
+      <span className="sr-only">Your Company</span>
+      <div
+        className="text-2xl font-bold text-indigo-900 flex items-center justify-center h-10 w-10 rounded-full bg-indigo-100"
+        // src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+        // alt=""
+      >
+        Logo
+      </div>
+    </a>
+  </div>;
+}
+
 export default function Navbar() {
+    const { total_items } = useCartContext()
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+
 
   return (
     <section>
@@ -67,18 +88,7 @@ export default function Navbar() {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex h-16 items-center justify-between">
                 {/* Logo (lg+) */}
-                <div className="hidden lg:flex lg:flex-1 lg:items-center">
-                  <a href="#">
-                    <span className="sr-only">Your Company</span>
-                    <div
-                      className="text-2xl font-bold text-indigo-900 flex items-center justify-center h-10 w-10 rounded-full bg-indigo-100"
-                      // src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                      // alt=""
-                    >
-                      Logo
-                    </div>
-                  </a>
-                </div>
+                <Logo/>
 
                 <div className="hidden h-full lg:flex">
                   {/* Flyout menus */}
@@ -144,14 +154,15 @@ export default function Navbar() {
 
                     {/* Cart */}
                     <div className="ml-4 flow-root lg:ml-8">
-                      <a href="#" className="group -m-2 flex items-center p-2">
+                      <Link href="/cart" className="group -m-2 flex items-center p-2">
                         <ShoppingBagIcon
                           className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                           aria-hidden="true"
                         />
-                        <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
+                        <span
+                          className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{total_items}</span>
                         <span className="sr-only">items in cart, view bag</span>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
